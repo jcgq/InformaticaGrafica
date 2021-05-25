@@ -1,0 +1,54 @@
+#include "camara.h"
+
+camara::camara(Tupla3f _eye, Tupla3f _at, Tupla3f _up, int _tipo, float _left, float _right, float _near, float _far, float _top, float _bottom){
+    this->eye=_eye;
+    this->at=_at;
+    this->up=_up;
+    this->tipo=_tipo;
+    this->right=_right;
+    this->left=_left;
+    this->top=_top;
+    this->bottom=_bottom;
+    this->near=_near;
+    this->far=_far;
+
+    this->setObserver();
+}
+
+void camara::setObserver(){
+    gluLookAt(eye(X), eye(Y), eye(Z), at(X), at(Y), at(Z), up(X), up(Y), up(Z));
+}
+
+void camara::setProyeccion(int _pro){
+    if(tipo==0)
+        glFrustum(left, right, bottom, top, near, far);
+    else
+        glOrtho(left, right, bottom, top, near, far);
+    
+}
+
+void camara::zoom(float incremento){
+    left=left*incremento;
+    right=right*incremento;
+    near=near*incremento;
+    far=far*incremento;
+    top=top*incremento;
+    bottom=bottom*incremento;
+}
+
+
+void camara::rotarXFirstPerson(float angle){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glRotatef(angle, 1.0, 0.0, 0.0);
+}
+void camara::rotarYFirstPerson(float angle){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glRotatef(angle, 0.0, 1.0, 0.0);
+}
+void camara::rotarZFirstPerson(float angle){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glRotatef(angle, 0.0, 0.0, 1.0);
+}
